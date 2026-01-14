@@ -1,6 +1,6 @@
 // pages/_error.js
 
-export const runtime = 'experimental-edge';
+export const runtime = 'edge';
 
 function Error({ statusCode }) {
     return (
