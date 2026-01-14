@@ -4,6 +4,7 @@ import '@/styles/globals.css';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 // Kategori icon mapping
 const CATEGORY_ICONS = {
@@ -32,50 +33,31 @@ const slugToCategory = (slug) => {
   return slug.toUpperCase().replace(/-/g, '_');
 };
 
-// Kategorilere göre dersleri grupla
-function getCoursesByCategory(quizData) {
-  const coursesByCategory = {};
-
-  quizData.forEach(quiz => {
-    if (!quiz.kategori || !quiz.dersSlug) return;
-
-    const categoryId = slugToCategory(quiz.kategori);
-
-    if (!coursesByCategory[categoryId]) {
-      coursesByCategory[categoryId] = new Map();
-    }
-
-    // Aynı dersSlug'dan sadece bir tane ekle
-    if (!coursesByCategory[categoryId].has(quiz.dersSlug)) {
-      coursesByCategory[categoryId].set(quiz.dersSlug, {
-        title: quiz.ders,
-        slug: quiz.dersSlug,
-      });
-    }
-  });
-
-  // Map'leri array'e çevir
-  const result = {};
-  Object.keys(coursesByCategory).forEach(cat => {
-    result[cat] = Array.from(coursesByCategory[cat].values());
-  });
-
-  return result;
-}
-
-App.getInitialProps = async () => {
-  // Server-side'da sorular.json'u oku
-  const quizData = require('../sorular.json');
-  const coursesByCategory = getCoursesByCategory(quizData);
-
-  return {
-    coursesByCategory,
-  };
-};
-
-export default function App({ Component, pageProps, coursesByCategory = {} }) {
-  const courses = coursesByCategory;
+export default function App({ Component, pageProps }) {
+  const [courses, setCourses] = useState({});
   const router = useRouter();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadCourses = async () => {
+      try {
+        const res = await fetch('/api/courses');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!cancelled && data && typeof data === 'object') {
+          setCourses(data);
+        }
+      } catch {
+        // ignore
+      }
+    };
+
+    loadCourses();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || '').replace(/\/$/, '');
   const canonicalPath = (router.asPath || '/').split('#')[0];
