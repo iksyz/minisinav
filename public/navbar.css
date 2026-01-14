@@ -1,0 +1,517 @@
+/* -------------------------------------------------------------
+ * 1. GENEL SAYFA VE HTML AYARLARI
+ * ------------------------------------------------------------- */
+body {
+    display: block;
+    background-color: #f4f7fa;
+    color: #1a202c;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* -------------------------
+ * Sidebar Stilleri
+ * ------------------------- */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 260px;
+    background-color: #ffffff;
+    color: #1a202c;
+    border-right: 1px solid #e2e8f0;
+    padding: 0;
+    transition: transform 0.3s ease, left 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar Header - Sabit */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    min-height: 60px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #e2e8f0;
+    background-color: #ffffff;
+}
+
+.sidebar-header .logo-icon {
+    font-size: 1.8rem;
+    color: #2b6cb0;
+    display: none;
+}
+
+.xders-logo {
+    width: 28px;
+    height: 28px;
+    display: block;
+    flex-shrink: 0;
+}
+
+.xders-logo--footer {
+    width: 32px;
+    height: 32px;
+}
+
+.sidebar-header .logo-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: -0.02em;
+}
+
+.logo-text .logo-part1 {
+    font-weight: 800;
+    color: #111827;
+}
+
+.logo-text .logo-part2 {
+    font-weight: 900;
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 55%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Toggle Buton */
+.toggle-btn {
+    background: none;
+    border: none;
+    color: #2b6cb0;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s ease, color 0.2s ease, background-color 0.2s ease;
+    min-width: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+}
+
+.toggle-btn:hover {
+    color: #1a5690;
+    background-color: #ebf8ff;
+}
+
+/* Sidebar Links Container - Scroll Edilebilir */
+.sidebar-links {
+    list-style: none;
+    padding: 0.75rem 0;
+    margin: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-grow: 1;
+    min-height: 0;
+    /* Profesyonel Scroll Stilleri */
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 #f7fafc;
+}
+
+/* Webkit tarayıcılar için scrollbar stilleri (Chrome, Safari, Edge) */
+.sidebar-links::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-links::-webkit-scrollbar-track {
+    background: #f7fafc;
+    border-radius: 10px;
+}
+
+.sidebar-links::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+    transition: background 0.2s ease;
+}
+
+.sidebar-links::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* Sidebar Links */
+.sidebar-links hr {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 0.75rem 1rem;
+}
+
+.sidebar-links>li {
+    padding: 0 0.75rem;
+}
+
+.sidebar-links a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #2d3748;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    position: relative;
+    min-height: 44px;
+}
+
+.sidebar-links a:hover,
+.sidebar-links a.active {
+    background-color: #ebf8ff;
+    color: #2b6cb0;
+    font-weight: 500;
+}
+
+.sidebar-links .icon {
+    min-width: 40px;
+    text-align: center;
+    color: #718096;
+    transition: color 0.2s ease;
+    font-size: 1.1rem;
+}
+
+.sidebar-links a:hover .icon,
+.sidebar-links a.active .icon {
+    color: #2b6cb0;
+}
+
+.sidebar-links .text {
+    font-size: 0.95rem;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+.has-submenu .arrow {
+    position: absolute;
+    right: 1rem;
+    font-size: 0.8rem;
+    color: #a0aec0;
+    transition: transform 0.3s ease;
+}
+
+.has-submenu.open>a .arrow {
+    transform: rotate(180deg);
+}
+
+.submenu {
+    list-style: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding-left: calc(40px + 0.5rem);
+    margin-top: 0.25rem;
+}
+
+.has-submenu.open .submenu {
+    max-height: 500px;
+}
+
+.submenu a {
+    color: #4a5568;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    font-size: 0.9rem;
+    min-height: 40px;
+}
+
+.submenu a:hover,
+.submenu a.active {
+    color: #2b6cb0;
+    background-color: transparent;
+}
+
+/* DARALTILMIŞ (COLLAPSED) HALİ */
+.sidebar.collapsed {
+    width: 88px;
+}
+
+.sidebar.collapsed .logo-text {
+    display: none;
+}
+
+.sidebar.collapsed .text,
+.sidebar.collapsed .arrow {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sidebar.collapsed .logo-icon {
+    display: block;
+}
+
+.sidebar.collapsed .toggle-btn {
+    transform: rotate(180deg);
+}
+
+.sidebar.collapsed .sidebar-header {
+    justify-content: center;
+}
+
+.sidebar.collapsed .submenu {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-links a {
+    justify-content: center;
+    padding: 0.75rem;
+}
+
+.sidebar.collapsed .sidebar-links .icon {
+    min-width: auto;
+}
+
+/* -------------------------------------
+ * MOBİL HEADER
+ * ------------------------------------- */
+.mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    z-index: 1001;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transform: translateY(0);
+    transition: transform 0.25s ease;
+}
+
+.mobile-header.hidden {
+    transform: translateY(-100%);
+}
+
+.mobile-menu-toggle-btn {
+    background: none;
+    border: none;
+    color: #2b6cb0;
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-menu-toggle-btn:hover {
+    background-color: #ebf8ff;
+}
+
+.mobile-header .logo-text {
+    font-size: 1.3rem;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+/* -------------------------------------
+ * MOBİL OVERLAY
+ * ------------------------------------- */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* -------------------------------------
+ * ANA İÇERİK ALANI
+ * ------------------------------------- */
+.content {
+    padding: 2rem;
+    width: 100%;
+    min-height: 0;
+    overflow-y: visible;
+}
+
+/* -------------------------------------
+ * WRAPPER
+ * ------------------------------------- */
+.content-and-footer-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 260px;
+    flex-grow: 1;
+    min-height: 100vh;
+    transition: padding-left 0.3s ease;
+}
+
+.content-and-footer-wrapper .footer-bleed {
+    margin-left: -260px;
+    width: calc(100% + 260px);
+}
+
+.content-and-footer-wrapper .footer-bleed .footer-inner {
+    padding: 3rem 1rem;
+    padding-left: calc(260px + 1rem);
+}
+
+.sidebar.collapsed~.content-and-footer-wrapper {
+    padding-left: 88px;
+}
+
+.sidebar.collapsed~.content-and-footer-wrapper .footer-bleed {
+    margin-left: -88px;
+    width: calc(100% + 88px);
+}
+
+.sidebar.collapsed~.content-and-footer-wrapper .footer-bleed .footer-inner {
+    padding-left: calc(88px + 1rem);
+}
+
+.content-and-footer-wrapper .content {
+    margin-left: 0 !important;
+    flex-grow: 1;
+}
+
+/* -------------------------------------
+ * MOBİL UYUMLULUK
+ * ------------------------------------- */
+@media (max-width: 768px) {
+    .mobile-header {
+        display: flex;
+    }
+
+    .sidebar {
+        width: 260px;
+        left: -260px;
+        transform: none;
+        transition: left 0.3s ease;
+        z-index: 1002;
+        box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+        /* Mobilde de scroll özelliklerini koru */
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .sidebar.mobile-open {
+        left: 0;
+    }
+
+    /* Mobilde sidebar header sabit kalmalı */
+    .sidebar .sidebar-header {
+        flex-shrink: 0;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    /* Mobilde sidebar links scroll edilebilir */
+    .sidebar .sidebar-links {
+        overflow-y: auto;
+        overflow-x: hidden;
+        flex-grow: 1;
+        min-height: 0;
+        /* Mobil için scrollbar stilleri */
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e0 #f7fafc;
+    }
+
+    /* Mobil için webkit scrollbar stilleri */
+    .sidebar .sidebar-links::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .sidebar .sidebar-links::-webkit-scrollbar-track {
+        background: #f7fafc;
+        border-radius: 10px;
+    }
+
+    .sidebar .sidebar-links::-webkit-scrollbar-thumb {
+        background: #cbd5e0;
+        border-radius: 10px;
+        transition: background 0.2s ease;
+    }
+
+    .sidebar .sidebar-links::-webkit-scrollbar-thumb:hover {
+        background: #a0aec0;
+    }
+
+    .content {
+        margin-left: 0 !important;
+        padding-top: 72px;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .content-and-footer-wrapper {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding-left: 0;
+    }
+
+    .content-and-footer-wrapper .footer-bleed {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .content-and-footer-wrapper .footer-bleed .footer-inner {
+        padding: 3rem 1rem;
+        padding-left: 1rem;
+    }
+
+    .sidebar .toggle-btn {
+        display: flex;
+    }
+
+    body.sidebar-active {
+        overflow: hidden;
+    }
+}
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .sidebar {
+        width: 240px;
+    }
+
+    .content-and-footer-wrapper {
+        padding-left: 240px;
+    }
+
+    .content-and-footer-wrapper .footer-bleed {
+        margin-left: -240px;
+        width: calc(100% + 240px);
+    }
+
+    .content-and-footer-wrapper .footer-bleed .footer-inner {
+        padding-left: calc(240px + 1rem);
+    }
+}

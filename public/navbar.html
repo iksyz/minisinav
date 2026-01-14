@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eğitim Sitesi Sidebar</title>
+    <link rel="stylesheet" href="navbar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+            <span class="logo-text">
+    <span class="logo-part1">Mini</span><span class="logo-part2">Sınav</span>
+</span>
+            <button class="toggle-btn"><i class="fa-solid fa-chevron-left"></i></button>
+        </div>
+
+        <ul class="sidebar-links">
+            <li>
+                <a href="#" class="active">
+                    <span class="icon"><i class="fa-solid fa-house"></i></span>
+                    <span class="text">Ana Sayfa</span>
+                </a>
+            </li>
+            
+            <hr> <li class="has-submenu">
+                <a href="#">
+                    <span class="icon"><i class="fa-solid fa-book"></i></span>
+                    <span class="text">LGS</span>
+                    <span class="arrow"><i class="fa-solid fa-angle-down"></i></span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="">Matematik</a></li>
+                    <li><a href="#">Fen Bilimleri</a></li>
+                    <li><a href="#">Türkçe</a></li>
+                </ul>
+            </li>
+
+            <li class="has-submenu">
+                <a href="#">
+                    <span class="icon"><i class="fa-solid fa-briefcase"></i></span>
+                    <span class="text">KPSS</span>
+                    <span class="arrow"><i class="fa-solid fa-angle-down"></i></span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="#">Genel Kültür</a></li>
+                    <li><a href="#">Genel Yetenek</a></li>
+                    <li><a href="#">Tarih</a></li>
+                    <li><a href="#">Coğrafya</a></li>
+                </ul>
+            </li>
+
+            <li class="has-submenu">
+                <a href="#">
+                    <span class="icon"><i class="fa-solid fa-university"></i></span>
+                    <span class="text">YKS</span>
+                    <span class="arrow"><i class="fa-solid fa-angle-down"></i></span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="#">TYT Matematik</a></li>
+                    <li><a href="#">AYT Fen Bilimleri</a></li>
+                    <li><a href="#">AYT Edebiyat</a></li>
+                </ul>
+            </li>
+
+            
+            <li class="has-submenu">
+                <a href="#">
+                    <span class="icon"><i class="fa-solid fa-university"></i></span>
+                    <span class="text">YKS</span>
+                    <span class="arrow"><i class="fa-solid fa-angle-down"></i></span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="#">TYT Matematik</a></li>
+                    <li><a href="#">AYT Fen Bilimleri</a></li>
+                    <li><a href="#">AYT Edebiyat</a></li>
+                </ul>
+            </li>
+
+            <hr> <li>
+                <a href="#">
+                    <span class="icon"><i class="fa-solid fa-gear"></i></span>
+                    <span class="text">Ayarlar</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="icon"><i class="fa-solid fa-user-circle"></i></span>
+                    <span class="text">Profilim</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <h1>Eğitim Sitesi Ana Sayfası</h1>
+        <p>Soldaki menüden LGS, KPSS veya YKS kategorilerine tıklayarak alt dersleri görebilirsiniz.</p>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
