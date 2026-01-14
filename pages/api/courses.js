@@ -1,7 +1,5 @@
 // pages/api/courses.js
 
-export const runtime = 'experimental-edge';
-
 const slugToCategory = (slug) => {
     return String(slug || '').toUpperCase().replace(/-/g, '_');
 };
@@ -34,15 +32,10 @@ function getCoursesByCategory(quizData) {
     return result;
 }
 
-export default function handler() {
+export default function handler(req, res) {
     const quizData = require('../../sorular.json');
     const coursesByCategory = getCoursesByCategory(Array.isArray(quizData) ? quizData : []);
 
-    return new Response(JSON.stringify(coursesByCategory), {
-        status: 200,
-        headers: {
-            'content-type': 'application/json; charset=utf-8',
-            'cache-control': 'public, max-age=300',
-        },
-    });
+    res.setHeader('Cache-Control', 'public, max-age=300');
+    res.status(200).json(coursesByCategory);
 }

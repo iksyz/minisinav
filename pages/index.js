@@ -3,8 +3,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
 
-export const runtime = 'experimental-edge';
-
 // 1. ANA SINAV KATEGORİLERİ (Final Liste)
 const MAIN_EXAMS = [
   { id: 'TYT', title: 'Temel Yeterlilik Testi (TYT)', desc: 'Üniversiteye girişin ilk adımı. Türkçe, Matematik ve Fen Bilimleri testleri.', color: 'red', icon: 'fa-pencil-ruler', link: '/kategori/tyt' },

@@ -7,9 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "shuffle": "node shuffle_answers.js"
+    "shuffle": "node shuffle_answers.js",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "^0.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "next": "14.2.5"
@@ -18,6 +21,7 @@
     "@tailwindcss/postcss": "^4",
     "tailwindcss": "^4",
     "eslint": "^8.57.0",
-    "eslint-config-next": "14.2.5"
+    "eslint-config-next": "14.2.5",
+    "wrangler": "^3.99.0"
   }
 }
