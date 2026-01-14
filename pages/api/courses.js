@@ -1,6 +1,6 @@
 // pages/api/courses.js
 
-export const runtime = 'edge';
+export const runtime = 'experimental-edge';
 
 const slugToCategory = (slug) => {
     return String(slug || '').toUpperCase().replace(/-/g, '_');

@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-export const runtime = 'edge';
+export const runtime = 'experimental-edge';
 
 export default function handler() {
   return new Response(JSON.stringify({ name: 'John Doe' }), {

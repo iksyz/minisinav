@@ -3,7 +3,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 
-export const runtime = 'edge';
+export const runtime = 'experimental-edge';
 
 // 1. ANA SINAV KATEGORİLERİ (Final Liste)
 const MAIN_EXAMS = [
