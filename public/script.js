@@ -6,17 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileToggleBtn = document.querySelector("#mobile-toggle-btn") || document.querySelector(".mobile-menu-toggle-btn");
     const mobileHeader = document.querySelector("#mobile-header");
     const sidebarOverlay = document.querySelector("#sidebar-overlay");
-    const submenuItems = document.querySelectorAll(".has-submenu");
     const body = document.body;
 
     if (!sidebar) { return; }
+
+    const getSubmenuItems = () => sidebar.querySelectorAll(".has-submenu");
 
     // --- YARDIMCI FONKSİYON: Tam Kapatmayı Yönetir ---
     const closeSidebar = () => {
         sidebar.classList.remove("mobile-open");
         body.classList.remove("sidebar-active");
         if (sidebarOverlay) sidebarOverlay.classList.remove("active");
-        submenuItems.forEach(item => { item.classList.remove("open"); });
+        getSubmenuItems().forEach(item => { item.classList.remove("open"); });
     };
 
     let isMobile = window.innerWidth <= 768;
@@ -66,63 +67,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Masaüstündeyken, daraltma yap (orijinal işlevi)
                 sidebar.classList.toggle("collapsed");
                 if (sidebar.classList.contains("collapsed")) {
-                    submenuItems.forEach(item => { item.classList.remove("open"); });
+                    getSubmenuItems().forEach(item => { item.classList.remove("open"); });
                 }
             }
         });
     }
 
+    // 3. Alt Menüleri Açma/Kapatma (event delegation - dinamik içerik için)
+    sidebar.addEventListener('click', (event) => {
+        const submenuLink = event.target.closest('.has-submenu > a');
+        const anyLink = event.target.closest('a');
 
-    // 3. Alt Menüleri Açma/Kapatma (LGS, KPSS, YKS gibi ana başlıklara tıklama)
-    submenuItems.forEach(item => {
-        const link = item.querySelector("a");
-        link.addEventListener("click", (event) => {
-
-            // Eğer linkin href'i '#' ise (menü başlığı)
-            if (link.getAttribute('href') === '#') {
-                event.preventDefault(); // Sayfa yenilemeyi engelle (Alt menüyü açmak için şart!)
+        // Submenu başlığına tıklandıysa
+        if (submenuLink && sidebar.contains(submenuLink)) {
+            if (submenuLink.getAttribute('href') === '#') {
+                event.preventDefault();
             }
 
-            // Alt menüye (LGS, KPSS, YKS) tıklanma işlemi
-            // Daraltılmış modda DEĞİLSE (veya mobil ise) alt menü açılır/kapanır.
+            const item = submenuLink.closest('.has-submenu');
+            if (!item) return;
+
             if (!sidebar.classList.contains("collapsed") || isMobile) {
-
-                // Tıklanan menüyü aç/kapat
-                item.classList.toggle("open");
-
-                // Diğer açık menüleri kapat
-                submenuItems.forEach(otherItem => {
-                    if (otherItem !== item && otherItem.classList.contains("open")) {
-                        otherItem.classList.remove("open");
+                item.classList.toggle('open');
+                getSubmenuItems().forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('open')) {
+                        otherItem.classList.remove('open');
                     }
                 });
-
             }
 
-            // Mobilde, alt menü içindeki gerçek linke (TYT Türkçe gibi) tıklandığında menüyü kapat
-            if (isMobile && link.getAttribute('href') !== '#') {
-                closeSidebar();
-            }
-        });
-    });
-
-    // 7. Mobilde tüm sidebar linklerine tıklandığında sidebar'ı kapat
-    const handleLinkClick = (event) => {
-        if (!isMobile) return;
-        const link = event.currentTarget;
-        // Link bir kategori veya ders sayfasına gidiyorsa sidebar'ı kapat
-        if (link.getAttribute('href') && link.getAttribute('href') !== '#') {
-            // Kısa bir gecikme ile kapat (sayfa geçişi için)
-            setTimeout(() => {
-                closeSidebar();
-            }, 100);
+            return;
         }
-    };
 
-    // Tüm sidebar linklerini bul ve event listener ekle
-    const allSidebarLinks = sidebar.querySelectorAll('a');
-    allSidebarLinks.forEach(link => {
-        link.addEventListener('click', handleLinkClick);
+        // Mobilde, sidebar içindeki herhangi bir gerçek linke tıklanınca kapat
+        if (isMobile && anyLink && sidebar.contains(anyLink)) {
+            const href = anyLink.getAttribute('href');
+            if (href && href !== '#') {
+                setTimeout(() => {
+                    closeSidebar();
+                }, 100);
+            }
+        }
     });
 
     // Sayfa yüklendiğinde sidebar'ı kapat (mobilde)
