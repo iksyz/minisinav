@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
             body.classList.remove("sidebar-active");
             if (sidebarOverlay) sidebarOverlay.classList.remove("active");
         } else {
+            // Mobilde collapsed mod submenu'leri tamamen gizler; mobilde her zaman açık genişlikte olsun
+            sidebar.classList.remove("collapsed");
             // Mobilde sayfa yüklendiğinde sidebar'ı kapat
             closeSidebar();
         }
@@ -45,6 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sidebar.classList.contains("mobile-open")) {
             closeSidebar();
         } else {
+            // Mobilde collapsed mod submenu'leri gizlediği için açarken sıfırla
+            if (isMobile) sidebar.classList.remove("collapsed");
             sidebar.classList.add("mobile-open");
             body.classList.add("sidebar-active");
             if (sidebarOverlay) sidebarOverlay.classList.add("active");
