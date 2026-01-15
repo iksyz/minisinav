@@ -2,6 +2,8 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
+  const shouldLoadAdsterraSocialBar = process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_ADSTERRA_SOCIALBAR === '1';
+
   return (
     <Html lang="tr">
       <Head>
@@ -22,6 +24,12 @@ export default function Document() {
         <NextScript />
         {/* script.js (toggle ve submenu'leri çalıştıran JS) */}
         <script src="/script.js" defer></script>
+        {shouldLoadAdsterraSocialBar && (
+          <script
+            src="https://pl28480860.effectivegatecpm.com/2d/e4/ba/2de4ba6139514fa6025c8052add1e666.js"
+            defer
+          ></script>
+        )}
       </body>
     </Html>
   )
