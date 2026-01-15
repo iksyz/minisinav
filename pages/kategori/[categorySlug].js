@@ -2,7 +2,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import quizData from '../../sorular.json'; 
+import quizData from '../../sorular.json';
 
 // --- İHTİYAÇ DUYULAN YARDIMCI SABİTLER ---
 
@@ -12,11 +12,11 @@ const MAIN_EXAMS = [
   { id: 'TYT', title: 'Temel Yeterlilik Testi (TYT)', desc: 'Üniversiteye girişin ilk adımı. Türkçe, Matematik ve Fen Bilimleri testleri.', color: 'red', icon: 'fa-pencil-ruler', link: '/kategori/tyt' },
   { id: 'AYT', title: 'Alan Yeterlilik Testleri (AYT)', desc: 'Lisans bölümleri için gerekli alan bilgisi testleri (Matematik, Fen, Edebiyat).', color: 'purple', icon: 'fa-brain', link: '/kategori/ayt' },
   { id: 'LGS', title: 'Liselere Geçiş Sınavı (LGS)', desc: 'Lise yerleştirmesi için Fen ve Matematik ağırlıklı konular.', color: 'green', icon: 'fa-school', link: '/kategori/lgs' },
-  
+
   // KPSS Genel ve Alan Ayrıldı
   { id: 'KPSS_GENEL', title: 'KPSS Genel Yetenek & Genel Kültür', desc: 'Tarih, Coğrafya, Türkçe ve Matematik dersleri (Önlisans/Ortaöğretim).', color: 'blue', icon: 'fa-briefcase', link: '/kategori/kpss-genel' },
   { id: 'KPSS_ALAN', title: 'KPSS Alan Bilgisi (ÖABT)', desc: 'ÖABT ve Alan Bilgisi konularına özel testler.', color: 'yellow', icon: 'fa-book-open', link: '/kategori/kpss-alan' },
-  
+
   // Yeni Eklenen Sınavlar
   { id: 'DGS', title: 'Dikey Geçiş Sınavı (DGS)', desc: 'Önlisans mezunları için sayısal ve sözel yetenek testleri.', color: 'cyan', icon: 'fa-graduation-cap', link: '/kategori/dgs' },
   { id: 'YDT', title: 'Yabancı Dil Testi (YDT)', desc: 'İngilizce ve diğer diller için Yükseköğretim Kurumları Sınavı dil testi.', color: 'orange', icon: 'fa-language', link: '/kategori/ydt' },
@@ -36,7 +36,7 @@ const COLOR_MAP = {
 // ... (FEAURED_COURSES listesi de bu yeni ID'lerle güncellenmeli) ...
 // 3. Slug'ı Kategori ID'sine Çevir
 const slugToCategory = (slug) => {
-    return slug.toUpperCase().replace(/-/g, '_');
+  return slug.toUpperCase().replace(/-/g, '_');
 }
 
 
@@ -46,7 +46,7 @@ export default function KategoriSayfasi({ categoryData, dersler, categorySlug })
   if (router.isFallback) {
     return <div className="container mx-auto p-8 max-w-6xl text-center text-gray-500">Kategori yükleniyor...</div>;
   }
-  
+
   if (!categoryData || !dersler || dersler.length === 0) {
     return (
       <div className="container mx-auto p-8 max-w-6xl text-center">
@@ -77,7 +77,7 @@ export default function KategoriSayfasi({ categoryData, dersler, categorySlug })
       </Head>
 
       <div className="container mx-auto p-4 md:p-8 max-w-6xl">
-        
+
         {/* Başlık Alanı */}
         <header className={`${colors.bg} p-8 rounded-xl shadow-lg mb-12 border-b-4 ${colors.border}`}>
           <h1 className={`text-5xl font-serif font-extrabold ${colors.text} mb-3`}>
@@ -91,29 +91,29 @@ export default function KategoriSayfasi({ categoryData, dersler, categorySlug })
         {/* Ders Kartlarını Listeleme Alanı */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {dersler.map((subject) => (
-            <Link 
+            <Link
               // DİKKAT: Artık doğrudan ders listesi sayfasına yönlendiriyoruz
               href={`/ders/${subject.dersSlug}`}
               key={subject.dersSlug}
               className={`group block p-5 ${colors.bg} border-l-4 ${colors.border} rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1`}
             >
               <h3 className={`text-xl font-serif font-bold text-gray-800 group-hover:${colors.text} transition-colors duration-300`}>
-                 {subject.title}
+                {subject.title}
               </h3>
-              
+
               <p className="text-gray-600 text-sm leading-relaxed mt-2">
-                 {subject.desc}
+                {subject.desc}
               </p>
-              
+
               <p className={`text-right text-xs ${colors.text} mt-3 font-semibold`}>
                 Tüm Konuları Gör →
               </p>
             </Link>
           ))}
         </div>
-        
+
         {/* Gizli div Tailwind'i renklere zorlamak için */}
-        <div className={`${dynamicClasses} text-yellow-700 bg-yellow-50 border-yellow-500 text-cyan-700 bg-cyan-50 border-cyan-500 text-orange-700 bg-orange-50 border-orange-500`} style={{display: 'none'}}></div> 
+        <div className={`${dynamicClasses} text-yellow-700 bg-yellow-50 border-yellow-500 text-cyan-700 bg-cyan-50 border-cyan-500 text-orange-700 bg-orange-50 border-orange-500`} style={{ display: 'none' }}></div>
       </div>
     </>
   );
@@ -124,57 +124,57 @@ export default function KategoriSayfasi({ categoryData, dersler, categorySlug })
 
 // 1. Next.js'e hangi kategori sayfalarını oluşturacağını söyleriz (Build sırasında)
 export async function getStaticPaths() {
-  const allQuizData = require('../../sorular.json'); 
-  
+  const allQuizData = require('../../sorular.json');
+
   // JSON'dan tüm tekil kategori slug'larını çek
   const paths = allQuizData
-    .filter(quiz => quiz.kategori) 
-    .map(quiz => ({ 
-        params: { 
-            categorySlug: quiz.kategori.toLowerCase().replace(/ /g, '-') // URL'ye uygun slug formatı (ör: tyt, kpss-genel)
-        } 
+    .filter(quiz => quiz.kategori)
+    .map(quiz => ({
+      params: {
+        categorySlug: quiz.kategori.toLowerCase().replace(/ /g, '-') // URL'ye uygun slug formatı (ör: tyt, kpss-genel)
+      }
     }))
     .filter((value, index, self) => self.findIndex(item => item.params.categorySlug === value.params.categorySlug) === index); // Tekrarları kaldır
 
   return {
-    paths, 
+    paths,
     fallback: false, // Tanımlanmayan kategori gelirse 404 göster
   };
 }
 
 // 2. URL'deki categorySlug'a göre dersleri filtreler ve sayfaya gönderir
 export async function getStaticProps({ params }) {
-  const allQuizData = require('../../sorular.json'); 
+  const allQuizData = require('../../sorular.json');
   const { categorySlug } = params;
-  
+
   // URL slug'ını Kategori ID'sine çevir (ör: tyt -> TYT, kpss-genel -> KPSS_GENEL)
-  const categoryId = slugToCategory(categorySlug); 
-  
+  const categoryId = slugToCategory(categorySlug);
+
   // Kategoriye ait tüm quizleri filtrele
-  const quizzesInThisCategory = allQuizData.filter(quiz => 
+  const quizzesInThisCategory = allQuizData.filter(quiz =>
     slugToCategory(quiz.kategori) === categoryId
   );
 
   if (quizzesInThisCategory.length === 0) {
-      return { notFound: true }; // Quiz yoksa 404
+    return { notFound: true }; // Quiz yoksa 404
   }
 
   // Quizleri dersSlug'a göre grupla (Her dersSlug'dan sadece bir tane al)
   const subjectsMap = quizzesInThisCategory.reduce((acc, quiz) => {
     const dersSlug = quiz.dersSlug;
-    
+
     if (dersSlug && !acc[dersSlug]) {
-        // Dersleri slug'a göre grupla ve gerekli bilgileri al
-        acc[dersSlug] = {
-            title: quiz.ders,
-            dersSlug: dersSlug,
-            // Dersin meta açıklamasını kullan (Quiz'in metaDesc'ini dersin açıklaması olarak kullanabiliriz)
-            desc: quiz.metaDesc, 
-        };
+      // Dersleri slug'a göre grupla ve gerekli bilgileri al
+      acc[dersSlug] = {
+        title: quiz.ders,
+        dersSlug: dersSlug,
+        // Dersin meta açıklamasını kullan (Quiz'in metaDesc'ini dersin açıklaması olarak kullanabiliriz)
+        desc: quiz.metaDesc,
+      };
     }
     return acc;
   }, {});
-  
+
   // Dersler array'ini oluştur
   const dersler = Object.values(subjectsMap);
 
@@ -187,6 +187,5 @@ export async function getStaticProps({ params }) {
       dersler,
       categorySlug,
     },
-    revalidate: 60, // 60 saniyede bir yeniden oluştur
   };
 }

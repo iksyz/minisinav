@@ -42,7 +42,7 @@ export default function App({ Component, pageProps }) {
 
     const loadCourses = async () => {
       try {
-        const res = await fetch('/api/courses');
+        const res = await fetch('/courses.json');
         if (!res.ok) return;
         const data = await res.json();
         if (!cancelled && data && typeof data === 'object') {

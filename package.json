@@ -4,15 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/generate_static_files.js",
     "build": "next build",
+    "export": "node -e \"console.log('Static export uses output: export (next.config.mjs). Build output is in ./out');\"",
     "start": "next start",
     "lint": "eslint",
-    "shuffle": "node shuffle_answers.js",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
+    "shuffle": "node shuffle_answers.js"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^0.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "next": "14.2.5"
@@ -21,7 +20,6 @@
     "@tailwindcss/postcss": "^4",
     "tailwindcss": "^4",
     "eslint": "^8.57.0",
-    "eslint-config-next": "14.2.5",
-    "wrangler": "^3.99.0"
+    "eslint-config-next": "14.2.5"
   }
 }
