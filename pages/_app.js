@@ -38,7 +38,7 @@ export default function App({ Component, pageProps }) {
   const [courses, setCourses] = useState({});
   const router = useRouter();
 
-  const shouldLoadAdsterra = process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_ADSTERRA_POPUNDER === '1';
+  const shouldLoadAdsterra = process.env.NODE_ENV === 'production';
 
   useEffect(() => {
     let cancelled = false;

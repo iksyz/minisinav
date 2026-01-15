@@ -2,7 +2,7 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
-  const shouldLoadAdsterraSocialBar = process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_ADSTERRA_SOCIALBAR === '1';
+  const shouldLoadAdsterraSocialBar = process.env.NODE_ENV === 'production';
 
   return (
     <Html lang="tr">
