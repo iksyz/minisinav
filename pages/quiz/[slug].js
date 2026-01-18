@@ -361,6 +361,12 @@ function QuizPlayer({ quiz }) {
             >
             </h2>
 
+            <div className="mb-6">
+                <div id="ad-banner-question-below-title" className="w-full flex justify-center">
+                    <AdsterraBanner300x250 key={`q-${soruIndex}`} />
+                </div>
+            </div>
+
             {/* Şıklar */}
             <ul className="space-y-4">
                 {mevcutSoru.siklar.map((sik, index) => {
@@ -403,12 +409,6 @@ function QuizPlayer({ quiz }) {
                     );
                 })}
             </ul>
-
-            <div className="mt-6">
-                <div id="ad-banner-question-bottom" className="w-full flex justify-center">
-                    <AdsterraBanner300x250 key={`q-${soruIndex}`} />
-                </div>
-            </div>
 
             {/* Fun Fact ve Sonraki Buton */}
             {secimYapildi && (
