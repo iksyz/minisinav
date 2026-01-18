@@ -52,6 +52,7 @@ function shuffleArray(array) {
 // --- AKADEMİK/EĞİTİM TEMALI Quiz Oynatıcısı (10 Soru Seçme Özellikli) ---
 function QuizPlayer({ quiz }) {
     const router = useRouter();
+    const questionTopRef = useRef(null);
     // Bu state, quiz'in tüm sorularından rastgele seçtiğimiz 10 soruyu tutacak
     const [aktifSorular, setAktifSorular] = useState([]);
 
@@ -131,6 +132,15 @@ function QuizPlayer({ quiz }) {
             }
         }
     }, [soruIndex, secimYapildi, toplamSoru]);
+
+    useEffect(() => {
+        const el = questionTopRef.current;
+        if (!el) return;
+
+        const headerOffset = 84;
+        const top = el.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    }, [soruIndex]);
 
 
     const handleOptionClick = (sik) => {
@@ -332,7 +342,7 @@ function QuizPlayer({ quiz }) {
 
     // --- SORU GÖSTERME EKRANI ---
     return (
-        <div className="bg-white p-5 md:p-8 rounded-lg shadow-xl border border-gray-200">
+        <div ref={questionTopRef} className="bg-white p-5 md:p-8 rounded-lg shadow-xl border border-gray-200">
             {/* İlerleme Çubuğu */}
             <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
                 <div
@@ -341,12 +351,6 @@ function QuizPlayer({ quiz }) {
                 ></div>
             </div>
             <p className="text-right text-sm text-gray-500 mb-4">Soru {soruIndex + 1} / {toplamSoru}</p>
-
-            <div className="mb-6">
-                <div id="ad-banner-question-top" className="w-full flex justify-center">
-                    <AdsterraBanner300x250 />
-                </div>
-            </div>
 
             {/* Soru Başlığı */}
             <h2
@@ -402,7 +406,7 @@ function QuizPlayer({ quiz }) {
 
             <div className="mt-6">
                 <div id="ad-banner-question-bottom" className="w-full flex justify-center">
-                    <AdsterraBanner300x250 />
+                    <AdsterraBanner300x250 key={`q-${soruIndex}`} />
                 </div>
             </div>
 
