@@ -3,7 +3,6 @@
 import '@/styles/globals.css';
 import Head from 'next/head';
 import Link from 'next/link';
-import Script from 'next/script';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -37,8 +36,6 @@ const slugToCategory = (slug) => {
 export default function App({ Component, pageProps }) {
   const [courses, setCourses] = useState({});
   const router = useRouter();
-
-  const shouldLoadAdsterra = process.env.NODE_ENV === 'production';
 
   useEffect(() => {
     let cancelled = false;
@@ -127,13 +124,6 @@ export default function App({ Component, pageProps }) {
           key="structured-data"
         />
       </Head>
-
-      {shouldLoadAdsterra && (
-        <Script
-          src="https://pl28480849.effectivegatecpm.com/f9/0f/1c/f90f1ce9dc854a13873ff957465b29b6.js"
-          strategy="afterInteractive"
-        />
-      )}
 
       {/* ANA FLEX KAPSAYICISI: Body'de display: flex; olduğu için bu kapsayıcıya gerek yok. */}
       {/* Sadece Navbar ve Wrapper'ı yan yana koyuyoruz. */}

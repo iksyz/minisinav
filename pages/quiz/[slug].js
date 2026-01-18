@@ -6,29 +6,82 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import quizData from '../../sorular.json';
 
-function AdsterraBanner300x250() {
+function loadHighPerformanceBanner(host, { key, width, height }) {
+    if (!host) return Promise.resolve();
+
+    if (typeof window === 'undefined') return Promise.resolve();
+
+    window.__hpBannerQueue = window.__hpBannerQueue || Promise.resolve();
+    window.__hpBannerQueue = window.__hpBannerQueue.then(
+        () =>
+            new Promise((resolve) => {
+                host.innerHTML = '';
+
+                window.atOptions = {
+                    key,
+                    format: 'iframe',
+                    height,
+                    width,
+                    params: {},
+                };
+
+                const invoke = document.createElement('script');
+                invoke.type = 'text/javascript';
+                invoke.src = `https://www.highperformanceformat.com/${key}/invoke.js`;
+                invoke.async = true;
+                invoke.onload = () => resolve();
+                invoke.onerror = () => resolve();
+                host.appendChild(invoke);
+            })
+    );
+
+    return window.__hpBannerQueue;
+}
+
+function HighPerformanceBanner({ bannerKey, width, height, className }) {
     const hostRef = useRef(null);
 
     useEffect(() => {
         const host = hostRef.current;
-        if (!host) return;
+        loadHighPerformanceBanner(host, { key: bannerKey, width, height });
+    }, [bannerKey, width, height]);
 
-        host.innerHTML = '';
+    return <div ref={hostRef} className={className} />;
+}
 
-        const inline = document.createElement('script');
-        inline.type = 'text/javascript';
-        inline.text = `atOptions = {\n  'key' : '23d2deabf9bcc9b24c625b789f02b6a7',\n  'format' : 'iframe',\n  'height' : 250,\n  'width' : 300,\n  'params' : {}\n};`;
+function armPopunderOnce(flagKey) {
+    if (typeof window === 'undefined') return;
 
-        const invoke = document.createElement('script');
-        invoke.type = 'text/javascript';
-        invoke.src = 'https://www.highperformanceformat.com/23d2deabf9bcc9b24c625b789f02b6a7/invoke.js';
-        invoke.async = false;
+    try {
+        if (window.sessionStorage.getItem(flagKey) === '1') return;
+    } catch {
+        return;
+    }
 
-        host.appendChild(inline);
-        host.appendChild(invoke);
-    }, []);
+    const handler = () => {
+        try {
+            if (window.sessionStorage.getItem(flagKey) === '1') return;
+            window.sessionStorage.setItem(flagKey, '1');
+        } catch {
+            return;
+        }
 
-    return <div ref={hostRef} className="adsterra-300x250" />;
+        const s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.src = 'https://pl28480849.effectivegatecpm.com/f9/0f/1c/f90f1ce9dc854a13873ff957465b29b6.js';
+        s.async = true;
+        document.body.appendChild(s);
+
+        setTimeout(() => {
+            try {
+                s.remove();
+            } catch {
+                // ignore
+            }
+        }, 3000);
+    };
+
+    window.addEventListener('click', handler, { once: true, passive: true });
 }
 
 // --- Şık Karıştırma Fonksiyonu (Fisher-Yates Shuffle) ---
@@ -141,6 +194,12 @@ function QuizPlayer({ quiz }) {
         const top = el.getBoundingClientRect().top + window.pageYOffset - headerOffset;
         window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
     }, [soruIndex]);
+
+    useEffect(() => {
+        if (testBitti) {
+            armPopunderOnce('popunder_result_shown');
+        }
+    }, [testBitti]);
 
 
     const handleOptionClick = (sik) => {
@@ -363,7 +422,13 @@ function QuizPlayer({ quiz }) {
 
             <div className="mb-6">
                 <div id="ad-banner-question-below-title" className="w-full flex justify-center">
-                    <AdsterraBanner300x250 key={`q-${soruIndex}`} />
+                    <HighPerformanceBanner
+                        bannerKey="9c54d7bd119b4be7e695aadac2685779"
+                        width={160}
+                        height={300}
+                        className="adsterra-160x300"
+                        key={`top-${soruIndex}`}
+                    />
                 </div>
             </div>
 
@@ -410,6 +475,18 @@ function QuizPlayer({ quiz }) {
                 })}
             </ul>
 
+            <div className="mt-6">
+                <div id="ad-banner-question-bottom" className="w-full flex justify-center">
+                    <HighPerformanceBanner
+                        bannerKey="23d2deabf9bcc9b24c625b789f02b6a7"
+                        width={300}
+                        height={250}
+                        className="adsterra-300x250"
+                        key={`bottom-${soruIndex}`}
+                    />
+                </div>
+            </div>
+
             {/* Fun Fact ve Sonraki Buton */}
             {secimYapildi && (
                 <div className="mt-6 pt-6 border-t border-gray-200">
@@ -435,6 +512,10 @@ function QuizPlayer({ quiz }) {
 export default function QuizPage({ quiz }) {
     const router = useRouter();
     const hasQuestionParam = Boolean(router?.query?.q);
+
+    useEffect(() => {
+        armPopunderOnce('popunder_quiz_opened');
+    }, []);
 
     if (!quiz) {
         return <p>Quiz yüklenirken bir sorun oluştu.</p>;

@@ -7,10 +7,22 @@
   max-width: 100%;
 }
 
+.adsterra-160x300 {
+  width: 160px;
+  height: 300px;
+  max-width: 100%;
+}
+
 @media (max-width: 340px) {
   .adsterra-300x250 {
     transform: scale(0.9);
     transform-origin: top center;
     height: 225px;
+  }
+
+  .adsterra-160x300 {
+    transform: scale(0.9);
+    transform-origin: top center;
+    height: 270px;
   }
 }
