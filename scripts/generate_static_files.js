@@ -20,7 +20,7 @@ const escapeXml = (unsafe) => {
 const getSiteUrl = () => {
     const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
     if (envUrl) return envUrl.replace(/\/$/, '');
-    return 'http://localhost:3000';
+    return 'https://xders.net';
 };
 
 const slugToCategory = (slug) => {
@@ -76,7 +76,9 @@ function main() {
     const robots = [
         'User-agent: *',
         'Allow: /',
+        'Disallow: /*?q=',
         '',
+        `Host: ${baseUrl}`,
         `Sitemap: ${baseUrl}/sitemap.xml`,
         '',
     ].join('\n');

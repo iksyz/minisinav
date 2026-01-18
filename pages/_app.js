@@ -63,7 +63,7 @@ export default function App({ Component, pageProps }) {
   }, []);
 
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || '').replace(/\/$/, '');
-  const canonicalPath = (router.asPath || '/').split('#')[0];
+  const canonicalPath = (router.asPath || '/').split('#')[0].split('?')[0];
   const canonicalUrl = siteUrl ? `${siteUrl}${canonicalPath}` : undefined;
 
   const defaultTitle = 'xDers';

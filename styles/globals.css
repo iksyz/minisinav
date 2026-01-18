@@ -1,2 +1,16 @@
 /* styles/globals.css */
 @import "tailwindcss";
+
+.adsterra-300x250 {
+  width: 300px;
+  height: 250px;
+  max-width: 100%;
+}
+
+@media (max-width: 340px) {
+  .adsterra-300x250 {
+    transform: scale(0.9);
+    transform-origin: top center;
+    height: 225px;
+  }
+}

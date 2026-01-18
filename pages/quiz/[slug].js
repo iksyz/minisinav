@@ -1,9 +1,35 @@
 // pages/quiz/[slug].js
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import quizData from '../../sorular.json';
+
+function AdsterraBanner300x250() {
+    const hostRef = useRef(null);
+
+    useEffect(() => {
+        const host = hostRef.current;
+        if (!host) return;
+
+        host.innerHTML = '';
+
+        const inline = document.createElement('script');
+        inline.type = 'text/javascript';
+        inline.text = `atOptions = {\n  'key' : '23d2deabf9bcc9b24c625b789f02b6a7',\n  'format' : 'iframe',\n  'height' : 250,\n  'width' : 300,\n  'params' : {}\n};`;
+
+        const invoke = document.createElement('script');
+        invoke.type = 'text/javascript';
+        invoke.src = 'https://www.highperformanceformat.com/23d2deabf9bcc9b24c625b789f02b6a7/invoke.js';
+        invoke.async = false;
+
+        host.appendChild(inline);
+        host.appendChild(invoke);
+    }, []);
+
+    return <div ref={hostRef} className="adsterra-300x250" />;
+}
 
 // --- Şık Karıştırma Fonksiyonu (Fisher-Yates Shuffle) ---
 // Her defasında şıkların sırasını da karıştırmak iyi bir fikirdir.
@@ -25,6 +51,7 @@ function shuffleArray(array) {
 
 // --- AKADEMİK/EĞİTİM TEMALI Quiz Oynatıcısı (10 Soru Seçme Özellikli) ---
 function QuizPlayer({ quiz }) {
+    const router = useRouter();
     // Bu state, quiz'in tüm sorularından rastgele seçtiğimiz 10 soruyu tutacak
     const [aktifSorular, setAktifSorular] = useState([]);
 
@@ -74,6 +101,22 @@ function QuizPlayer({ quiz }) {
     useEffect(() => {
         quizBaslat();
     }, [quiz]); // 'quiz' prop'u yüklendiğinde bir kez çalışır
+
+    useEffect(() => {
+        if (!router.isReady) return;
+        const slug = router.query.slug;
+        if (!slug) return;
+        if (toplamSoru <= 0) return;
+
+        router.replace(
+            {
+                pathname: `/quiz/${slug}`,
+                query: { q: String(soruIndex + 1) },
+            },
+            undefined,
+            { shallow: true, scroll: false }
+        );
+    }, [router.isReady, router.query.slug, soruIndex, toplamSoru]);
 
     // --- Soru ilerlemesini yönet ---
     useEffect(() => {
@@ -299,6 +342,12 @@ function QuizPlayer({ quiz }) {
             </div>
             <p className="text-right text-sm text-gray-500 mb-4">Soru {soruIndex + 1} / {toplamSoru}</p>
 
+            <div className="mb-6">
+                <div id="ad-banner-question-top" className="w-full flex justify-center">
+                    <AdsterraBanner300x250 />
+                </div>
+            </div>
+
             {/* Soru Başlığı */}
             <h2
                 className="text-2xl md:text-3xl font-serif font-semibold mb-6 text-gray-900"
@@ -351,6 +400,12 @@ function QuizPlayer({ quiz }) {
                 })}
             </ul>
 
+            <div className="mt-6">
+                <div id="ad-banner-question-bottom" className="w-full flex justify-center">
+                    <AdsterraBanner300x250 />
+                </div>
+            </div>
+
             {/* Fun Fact ve Sonraki Buton */}
             {secimYapildi && (
                 <div className="mt-6 pt-6 border-t border-gray-200">
@@ -374,6 +429,9 @@ function QuizPlayer({ quiz }) {
 
 // --- Sayfanın Ana Componenti (Arka plan stilleri _app.js'e taşındı) ---
 export default function QuizPage({ quiz }) {
+    const router = useRouter();
+    const hasQuestionParam = Boolean(router?.query?.q);
+
     if (!quiz) {
         return <p>Quiz yüklenirken bir sorun oluştu.</p>;
     }
@@ -382,6 +440,7 @@ export default function QuizPage({ quiz }) {
             <Head>
                 <title>{quiz.metaTitle}</title>
                 <meta name="description" content={quiz.metaDesc} />
+                <meta name="robots" content={hasQuestionParam ? 'noindex,follow' : 'index,follow'} />
                 <meta property="og:title" content={quiz.metaTitle} />
                 <meta property="og:description" content={quiz.metaDesc} />
                 <meta property="og:image" content={quiz.ogImage} />
